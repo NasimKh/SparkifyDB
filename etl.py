@@ -4,8 +4,9 @@ import psycopg2
 import pandas as pd
 from sql_queries import *
 
-
 def process_song_file(cur, filepath):
+    """ Connects to song json files and write them into song and artist db
+    """
     # open song file
     df = pd.read_json(filepath, lines=True)
 
@@ -20,6 +21,8 @@ def process_song_file(cur, filepath):
 
 
 def process_log_file(cur, filepath):
+    """ connects to the log file and extracts time , user and songplay table
+    """
     # open log file
     df = pd.read_json(filepath, lines=True)
 
