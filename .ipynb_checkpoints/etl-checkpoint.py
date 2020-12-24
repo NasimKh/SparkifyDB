@@ -3,9 +3,13 @@ import glob
 import psycopg2
 import pandas as pd
 from sql_queries import *
-import create_tables
 
 def process_song_file(cur, filepath):
+    """ Connects to song json files and write them into song and artist db
+    Keyword arguments:
+    cur -- cursor to the database 
+    filepath -- where the files are stored
+    """
     # open song file
     df = pd.read_json(filepath, lines=True)
 
@@ -20,6 +24,11 @@ def process_song_file(cur, filepath):
 
 
 def process_log_file(cur, filepath):
+    """ connects to the log file and extracts time , user and songplay table
+    Keyword arguments:
+    cur -- cursor to the database 
+    filepath -- where the files are stored
+    """
     # open log file
     df = pd.read_json(filepath, lines=True)
 
@@ -76,6 +85,15 @@ def process_log_file(cur, filepath):
 
 
 def process_data(cur, conn, filepath, func):
+    """ 
+    takes a function and runs the function on all the files in a directory. 
+    
+    Keyword arguments:
+    cur -- cursor to the database 
+    conn -- connection to database
+    filepath -- where the files are stored
+    func -- add the func to process the data through
+    """
     # get all files matching extension from directory
     all_files = []
     for root, dirs, files in os.walk(filepath):
@@ -95,6 +113,10 @@ def process_data(cur, conn, filepath, func):
 
 
 def main():
+    """
+    main function : connects to sparkifydb and creates a curssor , then process the data in folders
+    song_data and log_data and closes the connection at the end.
+    """
     conn = psycopg2.connect("host=127.0.0.1 dbname=sparkifydb user=student password=student")
     cur = conn.cursor()
 
@@ -105,5 +127,4 @@ def main():
 
 
 if __name__ == "__main__":
-    create_tables.main()
     main()
